@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.view.LayoutInflater
 import android.view.View
@@ -63,10 +64,15 @@ class AppIconAdapter(private val model: List<AppIconModel>, private val context:
         val iconName: TextView = itemView.findViewById(R.id.iconName)
     }
 
+    private fun saveThemeColor(color: Int) {
+        val prefs: SharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        prefs.edit().putInt("selectedColor", color).apply()
+    }
+
     private fun showRestartDialog(launcherAlias: String) {
         AlertDialog.Builder(context)
-            .setTitle("Restart Required")
-            .setMessage("App needs to restart to apply the icon change.")
+            .setTitle("Finish App")
+            .setMessage("App needs to be closed to apply the icon change.")
             .setPositiveButton("OK") { _, _ ->
                 switchIcon(launcherAlias)
                 restartApp()
